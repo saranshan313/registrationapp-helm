@@ -47,8 +47,7 @@ jobs:
      - name: 'Update the kubeconfig File' 
        run: |
         aws eks update-kubeconfig --name ${{ vars.CLUSTER_NAME }} --region ${{ vars.REGION }}
-        helm version
-        kubectl version
+        kubectl get pods -A
 
 
 
