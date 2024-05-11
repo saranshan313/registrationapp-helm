@@ -1,5 +1,5 @@
 name: "Install Prerequisites"
-description: "Install kubectl and Helm Packages"
+description: "Install kubectl and Helm Utilities"
 runs:
   using: "composite"
   

@@ -35,7 +35,7 @@ jobs:
      - name: 'Checkout the repository to the runner - ${{ vars.ENVIRONMENT }}'
        uses: actions/checkout@v2
 
-     - name: 'Install kubectl and Helm Packages'
+     - name: 'Install kubectl and Helm Utilities'
        uses: ./.github/actions/prerequisites       
 
      - name: 'AWS Login - ${{ vars.ENVIRONMENT }}'
@@ -46,7 +46,7 @@ jobs:
 
      - name: test 
        run: |
-        kubectl
+        kubectl version
         helm version
 
 
