@@ -44,8 +44,9 @@ jobs:
          aws_iam_role: ${{ vars.IAM_ROLE}}
          aws_region: ${{ vars.REGION }}
 
-     - name: test 
+     - name: 'Update the kubeconfig File' 
        run: |
+        aws eks update-kubeconfig --name ${{ vars.CLUSTER_NAME }} --region ${{ vars.REGION }}
         helm version
         kubectl version
 
