@@ -46,8 +46,8 @@ jobs:
 
      - name: test 
        run: |
-        kubectl version
         helm version
+        kubectl version
 
 
 
