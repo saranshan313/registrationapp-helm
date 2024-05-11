@@ -32,11 +32,11 @@ jobs:
        working-directory: ./helm-apps
  
    steps:
-     - name: 'Install kubectl and Helm Packages'
-       uses: ./.github/actions/prerequisites
-
      - name: 'Checkout the repository to the runner - ${{ vars.ENVIRONMENT }}'
        uses: actions/checkout@v2
+
+     - name: 'Install kubectl and Helm Packages'
+       uses: ./.github/actions/prerequisites       
 
      - name: 'AWS Login - ${{ vars.ENVIRONMENT }}'
        uses: ./.github/actions/aws-login
