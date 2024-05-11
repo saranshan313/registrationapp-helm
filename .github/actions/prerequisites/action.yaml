@@ -8,17 +8,17 @@ runs:
       run: |
         curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-archive-keyring.gpg
         echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
-        apt update
-        apt install kubectl
+        sudo apt update
+        sudo apt install kubectl
       shell: bash
     
     - name: 'Install Helm'
       run: |
-        curl https://baltocdn.com/helm/signing.asc | apt-key add -
-        apt-get install apt-transport-https --yes
-        echo "deb https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list
-        apt-get update
-        apt-get install helm2
+        curl https://baltocdn.com/helm/signing.asc | sudo apt-key add -
+        sudo apt-get install apt-transport-https --yes
+        echo "deb https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+        sudo apt-get update
+        sudo apt-get install helm2
       shell: bash
 
 
