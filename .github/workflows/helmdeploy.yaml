@@ -51,7 +51,8 @@ jobs:
 
       - name: "Helm Deploy"
         run: |
-          helm upgrade ${{ vars.APPNAME }} ./helm-apps --namespace ${{ vars.NAMESPACE }}
+          cat ~/.kube/config
+#          helm upgrade --install ${{ vars.APPNAME }} ./helm-apps --namespace ${{ vars.NAMESPACE }}
 
 #  eks-helm-prod-use1:
 #    if: github.ref == 'refs/heads/main'
