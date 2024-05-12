@@ -1,7 +1,7 @@
 name: Deploy Applications on EKS using Helm Charts
- 
-on: 
-#  workflow_dispatch:
+
+on:
+  #  workflow_dispatch:
   push:
     branches:
       - main
@@ -9,47 +9,49 @@ on:
     paths:
       - helm-apps/**
   pull_request:
-   branches:
-    - main
-  #  - feature/staging
-   paths:
-    - helm-apps/**    
+    branches:
+      - main
+    #  - feature/staging
+    paths:
+      - helm-apps/**
 
 permissions:
   id-token: write
-  contents: read  
- 
+  contents: read
+
 jobs:
- eks-helm-apps-staging-use1:
-   if: github.ref == 'refs/heads/staging' || github.event_name == 'pull_request'
-   #name: 'Terraform Infrastructure Change Management - ${{ vars.ENVIRONMENT }}'
-   runs-on: ubuntu-latest
-   environment: eks-helm-apps-staging-use1
-   defaults:
-     run:
-       shell: bash
-       # We keep Terraform files in the terraform directory.
-       working-directory: ./helm-apps
- 
-   steps:
-     - name: 'Checkout the repository to the runner - ${{ vars.ENVIRONMENT }}'
-       uses: actions/checkout@v2
+  eks-helm-apps-staging-use1:
+    if: github.ref == 'refs/heads/staging' || github.event_name == 'pull_request'
+    #name: 'Terraform Infrastructure Change Management - ${{ vars.ENVIRONMENT }}'
+    runs-on: ubuntu-latest
+    environment: eks-helm-apps-staging-use1
+    defaults:
+      run:
+        shell: bash
+        # We keep Terraform files in the terraform directory.
+        working-directory: ./helm-apps
 
-     - name: 'Install kubectl and Helm Utilities'
-       uses: ./.github/actions/prerequisites       
+    steps:
+      - name: "Checkout the repository to the runner - ${{ vars.ENVIRONMENT }}"
+        uses: actions/checkout@v2
 
-     - name: 'AWS Login - ${{ vars.ENVIRONMENT }}'
-       uses: ./.github/actions/aws-login
-       with:
-         aws_iam_role: ${{ vars.IAM_ROLE}}
-         aws_region: ${{ vars.REGION }}
+      - name: "Install kubectl and Helm Utilities"
+        uses: ./.github/actions/prerequisites
 
-     - name: 'Update the kubeconfig File' 
-       run: |
-        aws eks update-kubeconfig --name ${{ vars.CLUSTER_NAME }} --region ${{ vars.REGION }}
-        kubectl get pods -A
+      - name: "AWS Login - ${{ vars.ENVIRONMENT }}"
+        uses: ./.github/actions/aws-login
+        with:
+          aws_iam_role: ${{ vars.IAM_ROLE}}
+          aws_region: ${{ vars.REGION }}
 
+      - name: "Update the kubeconfig File"
+        run: |
+          aws eks update-kubeconfig --name ${{ vars.CLUSTER_NAME }} --region ${{ vars.REGION }}
+          kubectl get pods -A
 
+      - name: "Helm Deploy"
+        run: |
+          helm upgrade ${{ vars.APPNAME }} ./helm-apps --namespace $ {{ vars.NAMESPACE }}
 
 #  eks-helm-prod-use1:
 #    if: github.ref == 'refs/heads/main'
@@ -61,7 +63,7 @@ jobs:
 #        shell: bash
 #        # We keep Terraform files in the terraform directory.
 #        working-directory: ./terraform
- 
+
 #    steps:
 #      - name: 'Checkout the repository to the runner - ${{ vars.ENVIRONMENT }}'
 #        uses: actions/checkout@v2
@@ -76,14 +78,14 @@ jobs:
 #          aws_backend_bucket: ${{ vars.BUCKET_TF_STATE}}
 #          aws_backend_bucket_key: ${{ vars.ENVIRONMENT }}
 #          aws_backend_dynanmodb: ${{ vars.DYNAMODB_TABLE }}
- 
+
 #      - name: 'Check and Validate - ${{ vars.ENVIRONMENT }}'
 #        uses: ./.github/actions/terraform-test
-  
+
 #      - name: 'Deploy to ${{ vars.ENVIRONMENT }}'
 #        uses: ./.github/actions/terraform-apply
 #        with:
-#           terraform_workspace: ${{ vars.WORKSPACE }}          
+#           terraform_workspace: ${{ vars.WORKSPACE }}
 
 #  eks-helm-staging-apse2:
 #    if: github.ref == 'refs/heads/staging' || github.event_name == 'pull_request'
@@ -95,7 +97,7 @@ jobs:
 #        shell: bash
 #        # We keep Terraform files in the terraform directory.
 #        working-directory: ./terraform
- 
+
 #    steps:
 #      - name: 'Checkout the repository to the runner - ${{ vars.ENVIRONMENT }}'
 #        uses: actions/checkout@v2
@@ -110,10 +112,10 @@ jobs:
 #          aws_backend_bucket: ${{ vars.BUCKET_TF_STATE}}
 #          aws_backend_bucket_key: ${{ vars.ENVIRONMENT }}
 #          aws_backend_dynanmodb: ${{ vars.DYNAMODB_TABLE }}
- 
+
 #      - name: 'Check and Validate - ${{ vars.ENVIRONMENT }}'
 #        uses: ./.github/actions/terraform-test
-  
+
 #      - name: 'Deploy to ${{ vars.ENVIRONMENT }}'
 #        uses: ./.github/actions/terraform-apply
 #        with:
