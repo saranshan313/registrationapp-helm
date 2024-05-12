@@ -52,6 +52,7 @@ jobs:
       - name: "Helm Deploy"
         run: |
           helm version
+          pwd
           helm upgrade --install ${{ vars.APPNAME }} ./helm-apps --namespace ${{ vars.NAMESPACE }}
 
 #  eks-helm-prod-use1:
