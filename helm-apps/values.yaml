@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 image:
-  repository: 590183897813.dkr.ecr.us-east-1.amazonaws.com/repo-staging-use1-app-01
+  repository: 891377137828.dkr.ecr.us-east-1.amazonaws.com/repo-staging-use1-app-01
   pullPolicy: Always
   tag: v1.0.0
 
@@ -11,7 +11,7 @@ serviceAccount:
   create: true
   # Annotations to add to the service account
   annotations: {
-   eks.amazonaws.com/role-arn: "arn:aws:iam::590183897813:role/role-staging-use1-eks-app-01"
+   eks.amazonaws.com/role-arn: "arn:aws:iam::891377137828:role/role-staging-use1-eks-app-01"
   }
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
@@ -36,7 +36,7 @@ ingress:
   timeoutSeconds: 4
   stack: "alb-staging-use1-eks-alb-01"
   loadbalancername: "alb-staging-use1-eks-alb-01"
-  securityGroups: "sg-0b51c6844fcc21269"
+  securityGroups: "sg-0b83daaf1378b0351"
   tags: "env=staging,region=use1,Name=alb-staging-use1-eks-alb-01"
   #certificateArn: "arn:aws:acm:ap-southeast-2:302157744976:certificate/fcbc8a39-3862-440e-9746-52b4f41eea67"
 
