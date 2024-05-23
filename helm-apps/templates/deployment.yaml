@@ -20,7 +20,7 @@ spec:
       labels:
         {{- include "app.selectorLabels" . | nindent 8 }}
     spec:
-      serviceAccountName: {{ .Values.serviceAccount.name }}
+      serviceAccountName: {{ include "app.fullname" . }}
       containers:
         - name: {{ .Chart.Name }}
           image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
@@ -29,6 +29,42 @@ spec:
             - name: {{ .Values.ports.name }}
               containerPort: {{ .Values.ports.containerPort }}
               protocol: {{ .Values.ports.protocol }}
-
+          volumeMounts:
+            - name: {{ include "app.fullname" . }}
+              mountPath: "/mnt/dbcredentials"
+              readOnly: true
+          env:
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: DB_HOST
+                  name: {{ include "app.fullname" . }}
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: DB_PORT
+                  name: {{ include "app.fullname" . }}
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  key: DB_NAME
+                  name: {{ include "app.fullname" . }}
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  key: DB_USER
+                  name: {{ include "app.fullname" . }}
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: DB_PASSWORD
+                  name: {{ include "app.fullname" . }}
+      volumes:
+        - name: {{ include "app.fullname" . }}
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: {{ include "app.fullname" . }}
 
       
